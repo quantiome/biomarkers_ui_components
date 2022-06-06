@@ -35,8 +35,11 @@ extension DoubleExtension on double {
 }
 
 extension DateTimeExtension on DateTime {
-  /// Return the date formatted as AbbreviatedMonth Year (like "Sep 2021").
+  /// Returns the date formatted as AbbreviatedMonth Year (like "Sep 2021").
   String toAbrMonthAndYearString() => intl.DateFormat.yMMM().format(this);
+
+  /// Return the date formatted as something like 2022-01-25.
+  String toNumYearNumMonthNumDayString() => intl.DateFormat('yyy-MM-dd').format(this);
 }
 
 extension CanvasExtension on Canvas {

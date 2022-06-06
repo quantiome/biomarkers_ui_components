@@ -10,6 +10,12 @@ The package contains the following UI components:
   and/or 'Borderline' range can be added.
 - BiomarkerTrendLine:
   Meant to display a biomarker with a several values over time.
+- BiomarkerCard:
+  Take a list of biomarkers and tries to display them (best effort). The card will decide if it should 
+  display a BiomarkerRangeIndicator or a BiomarkerTrendLine. It will not display errors and try to handle 
+  them gracefully.
+- BiomarkerValidator: Contains tools to perform data validation before displaying BiomarkerCard (meant for the clinic portal).
+  Will given details about the errors found in the data for debugging.
 
 Figma design link: https://www.figma.com/file/Tfh5DGMt6ECmNQIKvfh2CE/Mobile?node-id=4959%3A29497
 

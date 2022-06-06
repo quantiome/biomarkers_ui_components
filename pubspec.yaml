@@ -17,3 +17,19 @@ dev_dependencies:
   flutter_lints: ^1.0.0
 
 flutter:
+  fonts:
+    - family: avenirRoman
+      fonts:
+        - asset: resources/fonts/avenir_roman.ttf
+
+    - family: avenirMedium
+      fonts:
+        - asset: resources/fonts/avenir_medium.ttf
+
+    - family: avenirBook
+      fonts:
+        - asset: resources/fonts/avenir_book.ttf
+
+    - family: LoraMedium
+      fonts:
+        - asset: resources/fonts/lora_medium.ttf
