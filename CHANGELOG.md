@@ -1,3 +1,11 @@
+## [2.1.0] - 2022-06-07
+* TrendLine: Now hiding the "More arrow" if there is nothing more.
+* TrendLine: Now the "More arrow" text will draw under the arrow if there is not enough space above (i.e. if the dot is close to the top edge).
+* TrendLine: made the value text look prettier.
+* TrendLine and BiomarkerTrendLine: Added `dateFormat` to control the formatting of the date.
+* TrendLine and BiomarkerTrendLine: Added `dotRadius` to control the size of the dots.
+* TrendLine and BiomarkerTrendLine: Added `linesStrokeWidth` to control the width of the drawn links and more arrow. 
+
 ## [2.0.0] - 2022-06-06
 * Added a lot of new element for displaying biomarker cards and doing data verification.
 * *Breaking change:* Changed BiomarkerRangeIndicator to take a BiomarkerData as parameter.

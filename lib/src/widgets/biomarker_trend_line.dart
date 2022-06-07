@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../models/biomarker_number.dart';
 import '../models/trend_line_point.dart';
@@ -12,6 +13,9 @@ class BiomarkerTrendLine extends StatelessWidget {
   final TextStyle valueTextStyle;
   final TextStyle dateTextStyle;
   final TextStyle hiddenPointsCountTextStyle;
+  final DateFormat? dateFormat;
+  final double? dotRadius;
+  final double? linesStrokeWidth;
 
   const BiomarkerTrendLine({
     Key? key,
@@ -20,6 +24,9 @@ class BiomarkerTrendLine extends StatelessWidget {
     required this.valueTextStyle,
     required this.dateTextStyle,
     required this.hiddenPointsCountTextStyle,
+    this.dateFormat,
+    this.dotRadius,
+    this.linesStrokeWidth,
   }) : super(key: key);
 
   List<TrendLinePoint> get _points => biomarkers
@@ -39,5 +46,8 @@ class BiomarkerTrendLine extends StatelessWidget {
         valueTextStyle: valueTextStyle,
         dateTextStyle: dateTextStyle,
         hiddenPointsCountTextStyle: hiddenPointsCountTextStyle,
+        dateFormat: dateFormat,
+        dotRadius: dotRadius,
+        linesStrokeWidth: linesStrokeWidth,
       );
 }

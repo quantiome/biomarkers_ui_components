@@ -36,7 +36,7 @@ class _MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<_MyHomePage> {
-  DisplayType _displayType = DisplayType.erroneousDuplicates;
+  DisplayType _displayType = DisplayType.rangeIndicator;
   List<String> errorMessages = [];
 
   @override
@@ -123,8 +123,8 @@ class _MyHomePageState extends State<_MyHomePage> {
         return [
           _generateTrendLineBiomarker(0.6, DateTime(2022, 02, 03)),
           _generateTrendLineBiomarker(2.4, DateTime(2022, 04, 25)),
-          _generateTrendLineBiomarker(1.6, DateTime(2021, 10, 12)),
-          _generateTrendLineBiomarker(1, DateTime(2021, 04, 25)),
+          _generateTrendLineBiomarker(1, DateTime(2021, 10, 12)),
+          _generateTrendLineBiomarker(1.6, DateTime(2021, 04, 25)),
           _generateTrendLineBiomarker(0.6, DateTime(2021, 01, 30)),
         ];
       case DisplayType.string:

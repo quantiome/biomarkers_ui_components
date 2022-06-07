@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../models/trend_line_point.dart';
 import '../utils/extensions.dart';
@@ -13,6 +14,9 @@ class TrendLine extends StatelessWidget {
   final TextStyle valueTextStyle;
   final TextStyle dateTextStyle;
   final TextStyle hiddenPointsCountTextStyle;
+  final DateFormat? dateFormat;
+  final double dotRadius;
+  final double linesStrokeWidth;
 
   const TrendLine({
     Key? key,
@@ -21,7 +25,12 @@ class TrendLine extends StatelessWidget {
     required this.valueTextStyle,
     required this.dateTextStyle,
     required this.hiddenPointsCountTextStyle,
+    this.dateFormat,
+    double? dotRadius,
+    double? linesStrokeWidth,
   })  : maxPointsToDisplayCount = maxPointsToDisplayCount ?? 3,
+        dotRadius = dotRadius ?? 16,
+        linesStrokeWidth = linesStrokeWidth ?? 8,
         assert(points.length >= 2),
         assert(
           maxPointsToDisplayCount == null || maxPointsToDisplayCount >= 2,
@@ -41,6 +50,9 @@ class TrendLine extends StatelessWidget {
               valueTextStyle: valueTextStyle,
               dateTextStyle: dateTextStyle,
               hiddenPointsCountTextStyle: hiddenPointsCountTextStyle,
+              dateFormat: dateFormat,
+              dotRadius: dotRadius,
+              linesStrokeWidth: linesStrokeWidth,
             ),
           ),
         ),
@@ -48,23 +60,25 @@ class TrendLine extends StatelessWidget {
 }
 
 class _Painter extends CustomPainter {
-  /// We will only show max this number of points at a time.
-  static const double _pointsRadius = 16;
   static const double _pointsAvailableHeight = 80;
-  static const double _linesStrokeWidth = 8;
-
-  /// The edge points will be drawn that away distance to the edges of the painter.
-  static const double _pointsHorizontalPadding = 42 + _pointsRadius;
 
   late final List<TrendLinePoint> points;
   late final List<TrendLinePoint> pointsToDisplay;
+
+  /// We will only show at max this number of points at a time.
   final int maxPointsToDisplayCount;
-  late final int hiddenPointsCount;
-  late final double minRange;
-  late final double maxRange;
   final TextStyle valueTextStyle;
   final TextStyle dateTextStyle;
   final TextStyle hiddenPointsCountTextStyle;
+  final DateFormat? dateFormat;
+  final double dotRadius;
+  final double linesStrokeWidth;
+
+  /// The edge points (left and right) will be drawn that distance away from the edges of the painter.
+  late final double _pointsHorizontalPadding;
+  late final int _hiddenPointsCount;
+  late final double _minRange;
+  late final double _maxRange;
 
   _Painter({
     required List<TrendLinePoint> points,
@@ -72,18 +86,22 @@ class _Painter extends CustomPainter {
     required this.valueTextStyle,
     required this.dateTextStyle,
     required this.hiddenPointsCountTextStyle,
+    required this.dateFormat,
+    required this.dotRadius,
+    required this.linesStrokeWidth,
   }) {
     this.points = points..sort((a, b) => a.time.isBefore(b.time) ? -1 : 1);
-    hiddenPointsCount = (points.length - maxPointsToDisplayCount).clampToInt(0, points.length);
+    _hiddenPointsCount = (points.length - maxPointsToDisplayCount).clampToInt(0, points.length);
     pointsToDisplay = this.points.skip((points.length - maxPointsToDisplayCount).clampToInt(0, points.length)).toList();
-    minRange = pointsToDisplay.fold(
+    _minRange = pointsToDisplay.fold(
       double.infinity,
       (previousValue, element) => element.value < previousValue ? element.value : previousValue,
     );
-    maxRange = pointsToDisplay.fold(
+    _maxRange = pointsToDisplay.fold(
       -double.infinity,
       (previousValue, element) => element.value > previousValue ? element.value : previousValue,
     );
+    _pointsHorizontalPadding = 42 + dotRadius;
   }
 
   List<_Point> _computePoints(Size canvasSize) {
@@ -91,12 +109,12 @@ class _Painter extends CustomPainter {
     return List<_Point>.generate(
       pointsToDisplay.length,
       (index) {
-        final double yRatio = pointsToDisplay[index].value.normalize(minRange, maxRange);
+        final double yRatio = pointsToDisplay[index].value.normalize(_minRange, _maxRange);
         final double xPosition = _pointsHorizontalPadding + pointsSpacing * index;
 
         /// Using (1 - yRatio) rather than just [yRatio] because the origin for drawing is top (left), and the [minValue]
         /// needs to be drawn at the bottom.
-        final double yPosition = _pointsRadius + (_pointsAvailableHeight - _pointsRadius) * (1 - yRatio);
+        final double yPosition = dotRadius + (_pointsAvailableHeight - dotRadius) * (1 - yRatio);
 
         final Offset position = Offset(xPosition, yPosition);
 
@@ -117,11 +135,13 @@ class _Painter extends CustomPainter {
       processedPoints: processedPoints,
     );
 
-    _drawMoreArrow(
-      canvas: canvas,
-      canvasSize: size,
-      firstPoint: processedPoints.first,
-    );
+    if (_hiddenPointsCount != 0) {
+      _drawMoreArrow(
+        canvas: canvas,
+        canvasSize: size,
+        firstPoint: processedPoints.first,
+      );
+    }
 
     _drawCircles(
       canvas: canvas,
@@ -159,10 +179,10 @@ class _Painter extends CustomPainter {
 
             /// Adding some translation here because we want the gradient to start just after the first circle edge and
             /// end just before the next circle edge (to have a smooth junction).
-            startPoint.position.translate(_pointsRadius, 0),
-            endPoint.position.translate(-_pointsRadius, 0)),
+            startPoint.position.translate(dotRadius, 0),
+            endPoint.position.translate(-dotRadius, 0)),
       )
-      ..strokeWidth = _linesStrokeWidth
+      ..strokeWidth = linesStrokeWidth
       ..strokeCap = StrokeCap.square;
 
     canvas.drawLine(startPoint.position, endPoint.position, paint);
@@ -175,7 +195,7 @@ class _Painter extends CustomPainter {
   }) {
     final Paint paint = Paint()
       ..color = firstPoint.color
-      ..strokeWidth = _linesStrokeWidth
+      ..strokeWidth = linesStrokeWidth
       ..strokeCap = StrokeCap.butt;
 
     /// We need to manually draw a dashed line bits by bits.
@@ -186,19 +206,19 @@ class _Painter extends CustomPainter {
     const double arrowHeadHeight = 14;
     const double arrowHeadScale = arrowHeadHeight / ArrowHeadPath.height;
     const double arrowHeadWidth = arrowHeadScale * ArrowHeadPath.width;
-    const double gapWidth = _linesStrokeWidth * 0.5;
-    const double blockWidth = _linesStrokeWidth * 0.5;
+    final double gapWidth = linesStrokeWidth * 0.5;
+    final double blockWidth = linesStrokeWidth * 0.5;
 
     /// A "segment" is a block followed by a gap (keeping in mind the orientation is right to left).
-    const double segmentWidth = gapWidth + blockWidth;
-    final double lineLength = firstPoint.position.dx - _pointsRadius - arrowHeadWidth + blockWidth;
+    final double segmentWidth = gapWidth + blockWidth;
+    final double lineLength = firstPoint.position.dx - dotRadius - arrowHeadWidth + blockWidth;
     final int blocksCount = lineLength ~/ (gapWidth + blockWidth);
-    final Offset lineStartPoint = firstPoint.position.translate(-_pointsRadius, 0);
+    final Offset lineStartPoint = firstPoint.position.translate(-dotRadius, 0);
 
     /// We "extend" the first block to the inside of the circle to avoid seeing a gap at the circle curve.
     canvas.drawLine(
       lineStartPoint,
-      lineStartPoint.translate(_pointsRadius, 0),
+      lineStartPoint.translate(dotRadius, 0),
       paint,
     );
 
@@ -216,12 +236,24 @@ class _Painter extends CustomPainter {
     canvas.drawPath(arrowHead, paint);
 
     /// Draw text
-    canvas.layoutAndDrawText(
-      text: '+$hiddenPointsCount',
+    final TextPainter textPainter = canvas.layoutText(
+      text: '+$_hiddenPointsCount',
       textStyle: hiddenPointsCountTextStyle,
+    );
+
+    double textYPosition = lineStartPoint.dy - arrowHeadHeight * 0.5 - textToArrowVerticalPadding;
+    Alignment textAnchor = Alignment.bottomLeft;
+    if (textYPosition - textPainter.height < 0) {
+      /// Draw the text under the arrow if it is too close to the top edge.
+      textYPosition = lineStartPoint.dy + arrowHeadHeight * 0.5 + textToArrowVerticalPadding;
+      textAnchor = Alignment.topLeft;
+    }
+
+    canvas.drawText(
       canvasSize: canvasSize,
-      textPosition: Offset(0, lineStartPoint.dy - arrowHeadHeight * 0.5 - textToArrowVerticalPadding),
-      anchor: Alignment.bottomLeft,
+      textPainter: textPainter,
+      textPosition: Offset(0, textYPosition),
+      anchor: textAnchor,
     );
   }
 
@@ -245,7 +277,7 @@ class _Painter extends CustomPainter {
       ..color = point.color
       ..style = PaintingStyle.fill;
 
-    canvas.drawCircle(point.position, _pointsRadius, paint);
+    canvas.drawCircle(point.position, dotRadius, paint);
   }
 
   void _drawTexts({
@@ -269,8 +301,9 @@ class _Painter extends CustomPainter {
   }) {
     const double valueToDateVerticalPadding = 5;
 
+    /// Draw date
     final TextPainter dateTextPainter = canvas.layoutText(
-      text: point.time.toAbrMonthAndYearString(),
+      text: dateFormat?.format(point.time) ?? point.time.toAbrMonthAndYearString(),
       textStyle: dateTextStyle,
     );
 
@@ -281,8 +314,9 @@ class _Painter extends CustomPainter {
       anchor: Alignment.bottomCenter,
     );
 
+    /// Draw value
     canvas.layoutAndDrawText(
-      text: '${point.value}',
+      text: point.value.toStringPretty(),
       canvasSize: canvasSize,
       textStyle: valueTextStyle,
       textPosition: Offset(point.position.dx, canvasSize.height - valueToDateVerticalPadding - dateTextPainter.height),
