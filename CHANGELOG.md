@@ -1,3 +1,7 @@
+## [2.2.0] - 2022-06-08
+* TrendLine: Moved the value text to be just above the dot (or just under it if there is no space above) rather than at the bottom.
+* BioMarkerCard: Updated the font style for values text in TrendLine.
+
 ## [2.1.0] - 2022-06-07
 * TrendLine: Now hiding the "More arrow" if there is nothing more.
 * TrendLine: Now the "More arrow" text will draw under the arrow if there is not enough space above (i.e. if the dot is close to the top edge).

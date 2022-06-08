@@ -299,7 +299,7 @@ class _Painter extends CustomPainter {
     required Size canvasSize,
     required _Point point,
   }) {
-    const double valueToDateVerticalPadding = 5;
+    final double valueToDotVerticalPadding = dotRadius + 5;
 
     /// Draw date
     final TextPainter dateTextPainter = canvas.layoutText(
@@ -315,12 +315,24 @@ class _Painter extends CustomPainter {
     );
 
     /// Draw value
-    canvas.layoutAndDrawText(
+    final TextPainter valueTextPainter = canvas.layoutText(
       text: point.value.toStringPretty(),
-      canvasSize: canvasSize,
       textStyle: valueTextStyle,
-      textPosition: Offset(point.position.dx, canvasSize.height - valueToDateVerticalPadding - dateTextPainter.height),
-      anchor: Alignment.bottomCenter,
+    );
+
+    double valueTextYPosition = point.position.dy - valueToDotVerticalPadding;
+    Alignment textAnchor = Alignment.bottomCenter;
+    if (valueTextYPosition - valueTextPainter.height < 0) {
+      /// Draw the text under the dot if it is too close to the top edge.
+      valueTextYPosition = point.position.dy + valueToDotVerticalPadding;
+      textAnchor = Alignment.topCenter;
+    }
+
+    canvas.drawText(
+      canvasSize: canvasSize,
+      textPainter: valueTextPainter,
+      textPosition: Offset(point.position.dx, valueTextYPosition),
+      anchor: textAnchor,
     );
   }
 

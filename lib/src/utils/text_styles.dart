@@ -41,8 +41,14 @@ abstract class AppTextStyles {
 
   static const TextStyle biomarkerCardTrendLineValue = TextStyle(
     color: AppColors.grey900,
-    fontSize: 20,
+    fontSize: 16,
     fontFamily: AppFonts.avenirBook,
+  );
+
+  static const TextStyle biomarkerTrendLineHiddenPointsCount = TextStyle(
+    color: AppColors.grey700,
+    fontSize: 14,
+    fontFamily: AppFonts.avenirMedium,
   );
 
   static const TextStyle biomarkerUnit = TextStyle(
@@ -61,12 +67,6 @@ abstract class AppTextStyles {
     color: AppColors.grey600,
     fontSize: 14,
     fontFamily: AppFonts.avenirBook,
-  );
-
-  static const TextStyle biomarkerTrendLineHiddenPointsCount = TextStyle(
-    color: AppColors.grey700,
-    fontSize: 16,
-    fontFamily: AppFonts.avenirMedium,
   );
 
   static const TextStyle biomarkerRangeIndicatorMinMaxValues = TextStyle(
