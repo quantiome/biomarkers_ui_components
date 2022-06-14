@@ -72,6 +72,8 @@ class BiomarkerData {
           time: time,
           name: name,
           unit: unit,
+          maxOptimalValue: maxOptimalValue,
+          minOptimalValue: minOptimalValue,
         );
       }
     } else {

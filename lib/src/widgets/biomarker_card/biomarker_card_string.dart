@@ -44,6 +44,26 @@ class BiomarkerCardString extends StatelessWidget {
         maxLines: 1,
       );
 
+  Widget _buildOptimalRangeText() {
+    late final String text;
+    if (!biomarker.hasOptimalRange) {
+      text = '--';
+    } else if (biomarker.maxOptimalValue == null) {
+      text = 'Over ${biomarker.minOptimalValue!.toStringPretty()}';
+    } else if (biomarker.minOptimalValue == null) {
+      text = 'Under ${biomarker.maxOptimalValue!.toStringPretty()}';
+    } else {
+      text = '${biomarker.minOptimalValue!.toStringPretty()} - ${biomarker.maxOptimalValue!.toStringPretty()}';
+    }
+
+    return Text(
+      'optimal range: $text',
+      style: AppTextStyles.biomarkerOptimalRange,
+      overflow: TextOverflow.ellipsis,
+      maxLines: 1,
+    );
+  }
+
   Widget _buildNoteText() => Text(
         note ?? '',
         style: AppTextStyles.biomarkerNote,
@@ -59,6 +79,10 @@ class BiomarkerCardString extends StatelessWidget {
           _buildDateText(),
           const SizedBox(height: 16),
           _buildValueText(),
+          if (biomarker.hasOptimalRange) ...[
+            const SizedBox(height: 16),
+            _buildOptimalRangeText(),
+          ],
           if (_hasNote) ...[
             const SizedBox(height: 8),
             _buildNoteText(),

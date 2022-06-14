@@ -1,3 +1,7 @@
+## [2.3.0] - 2022-06-14
+* BiomarkerString: added `maxOptimalValue` and `minOptimalValue`. 
+* BioMarkerCard: Now showing optimal range text for BiomarkerStrings if they have a `maxOptimalValue` and/or `minOptimalValue`.
+
 ## [2.2.0] - 2022-06-08
 * TrendLine: Moved the value text to be just above the dot (or just under it if there is no space above) rather than at the bottom.
 * BioMarkerCard: Updated the font style for values text in TrendLine.

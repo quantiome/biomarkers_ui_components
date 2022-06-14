@@ -7,6 +7,7 @@ enum DisplayType {
   rangeIndicator,
   trendLine,
   string,
+  stringWithNumbers,
   prefixedNumber,
   erroneousSingleNumber,
   erroneousMultipleNumbers,
@@ -133,6 +134,16 @@ class _MyHomePageState extends State<_MyHomePage> {
             value: 'Negative',
             name: 'Covid test',
             time: DateTime(2022, 04),
+          ),
+        ];
+      case DisplayType.stringWithNumbers:
+        return [
+          BiomarkerData(
+            value: '2.8|2.9',
+            name: 'CRR - Cholesterol risk ratio',
+            time: DateTime(2022, 03),
+            unit: 'metric F***ing tonnes',
+            minOptimalValue: 9000,
           ),
         ];
       case DisplayType.prefixedNumber:
