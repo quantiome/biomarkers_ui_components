@@ -66,6 +66,28 @@ class BiomarkerCardRangeIndicator extends StatelessWidget {
     );
   }
 
+  Widget _buildRangeDot() => Row(
+        children: [
+          Container(
+            width: 24,
+            height: 24,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: biomarker.range.color,
+            ),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              biomarker.range.humanReadableName,
+              style: AppTextStyles.biomarkerOptimalRange,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
+          ),
+        ],
+      );
+
   Widget _buildNoteText() => Text(
         note ?? '',
         style: AppTextStyles.biomarkerNote,
@@ -74,9 +96,11 @@ class BiomarkerCardRangeIndicator extends StatelessWidget {
   Widget _buildBiomarkerRangeIndicator() => BiomarkerRangeIndicator(
         biomarker: biomarker,
         textStyle: AppTextStyles.biomarkerRangeIndicatorMinMaxValues,
-        barDefaultColor: AppColors.grey400,
-        barBorderlineColor: AppColors.gold,
-        barOptimalColor: AppColors.purple500,
+        barDefaultColor: AppColors.biomarkerDefault,
+        barOptimalColor: AppColors.biomarkerOptimal,
+        barBorderlineColor: AppColors.biomarkerBorderlineLow,
+        barBadColor: AppColors.biomarkerBadLow,
+        barVeryBadColor: AppColors.biomarkerVeryBadLow,
         cursorLineColor: AppColors.grey700,
         cursorTriangleColor: AppColors.grey700,
         coloredBarWidth: 46,
@@ -101,6 +125,8 @@ class BiomarkerCardRangeIndicator extends StatelessWidget {
                     _buildValueText(),
                     const SizedBox(height: 16),
                     _buildOptimalRangeText(),
+                    const SizedBox(height: 16),
+                    if (biomarker.range != BiomarkerNumberRange.unknown) _buildRangeDot(),
                   ],
                 ),
               ),

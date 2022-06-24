@@ -24,6 +24,10 @@ class BiomarkerData {
   final double? minOptimalValue;
   final double? maxBorderlineValue;
   final double? minBorderlineValue;
+  final double? maxBadValue;
+  final double? minBadValue;
+  final double? maxVeryBadValue;
+  final double? minVeryBadValue;
   final DateTime time;
   final String name;
   final String? unit;
@@ -37,6 +41,10 @@ class BiomarkerData {
     this.minOptimalValue,
     this.maxBorderlineValue,
     this.minBorderlineValue,
+    this.maxBadValue,
+    this.minBadValue,
+    this.maxVeryBadValue,
+    this.minVeryBadValue,
     required this.time,
     required this.name,
     this.unit,
@@ -101,6 +109,10 @@ class BiomarkerData {
         minOptimalValue: minOptimalValue,
         maxBorderlineValue: maxBorderlineValue,
         minBorderlineValue: minBorderlineValue,
+        maxBadValue: maxBadValue,
+        minBadValue: minBadValue,
+        maxVeryBadValue: maxVeryBadValue,
+        minVeryBadValue: minVeryBadValue,
       ).where((rule) => !rule.isRespected).map((rule) => rule.errorMessage).toList();
       if (validationErrors.isNotEmpty) {
         if (!isNumberValid) errors.add('Invalid number = $numberValue');
@@ -127,6 +139,10 @@ class BiomarkerData {
       minOptimalValue: minOptimalValue,
       maxBorderlineValue: maxBorderlineValue,
       minBorderlineValue: minBorderlineValue,
+      maxBadValue: maxBadValue,
+      minBadValue: minBadValue,
+      maxVeryBadValue: maxVeryBadValue,
+      minVeryBadValue: minVeryBadValue,
       time: time,
       name: name,
       unit: unit,
@@ -146,6 +162,10 @@ class BiomarkerData {
           minOptimalValue == other.minOptimalValue &&
           maxBorderlineValue == other.maxBorderlineValue &&
           minBorderlineValue == other.minBorderlineValue &&
+          maxBadValue == other.maxBadValue &&
+          minBadValue == other.minBadValue &&
+          maxVeryBadValue == other.maxVeryBadValue &&
+          minVeryBadValue == other.minVeryBadValue &&
           time == other.time &&
           name == other.name &&
           unit == other.unit;
@@ -159,6 +179,10 @@ class BiomarkerData {
       minOptimalValue.hashCode ^
       maxBorderlineValue.hashCode ^
       minBorderlineValue.hashCode ^
+      maxBadValue.hashCode ^
+      minBadValue.hashCode ^
+      maxVeryBadValue.hashCode ^
+      minVeryBadValue.hashCode ^
       time.hashCode ^
       name.hashCode ^
       unit.hashCode;

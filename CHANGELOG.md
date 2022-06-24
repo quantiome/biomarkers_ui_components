@@ -1,3 +1,11 @@
+## [3.0.0] - 2022-06-24
+* BiomarkerCardRangeIndicator: added colored range indicator dot and text. 
+* BiomarkerRangeIndicator and RangeIndicator: Added `maxBadValue`, `minBadValue`, `maxVeryBadValue` and `minVeryBadValue`. 
+* *Breaking change:* BiomarkerRangeIndicator and RangeIndicator: Removed `barBorderlineColor`.
+* BiomarkerRangeIndicator and RangeIndicator: Added `barBorderlineHighColor`, `barBorderlineLowColor`, `barBadHighColor`, `barBadLowColor`, `barVeryBadHighColor` and `barVeryBadLowColor`.
+* Updated validation rules accordingly.
+* Updated example app to add new examples.
+
 ## [2.3.0] - 2022-06-14
 * BiomarkerString: added `maxOptimalValue` and `minOptimalValue`. 
 * BioMarkerCard: Now showing optimal range text for BiomarkerStrings if they have a `maxOptimalValue` and/or `minOptimalValue`.

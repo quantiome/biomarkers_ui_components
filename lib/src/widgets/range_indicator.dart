@@ -17,10 +17,19 @@ class RangeIndicator extends StatelessWidget {
   final double? minOptimalValue;
   final double? maxBorderlineValue;
   final double? minBorderlineValue;
+  final double? maxBadValue;
+  final double? minBadValue;
+  final double? maxVeryBadValue;
+  final double? minVeryBadValue;
   final TextStyle textStyle;
   final Color barDefaultColor;
   final Color barOptimalColor;
-  final Color barBorderlineColor;
+  final Color barBorderlineHighColor;
+  final Color barBorderlineLowColor;
+  final Color barBadHighColor;
+  final Color barBadLowColor;
+  final Color barVeryBadHighColor;
+  final Color barVeryBadLowColor;
   final Color cursorLineColor;
   final Color cursorTriangleColor;
   final double coloredBarWidth;
@@ -34,6 +43,10 @@ class RangeIndicator extends StatelessWidget {
         minOptimalValue: minOptimalValue,
         maxBorderlineValue: maxBorderlineValue,
         minBorderlineValue: minBorderlineValue,
+        maxBadValue: maxBadValue,
+        minBadValue: minBadValue,
+        maxVeryBadValue: maxVeryBadValue,
+        minVeryBadValue: minVeryBadValue,
       )..add(
           BiomarkerValidationRule(
             rule: () => value >= minValue && value <= maxValue,
@@ -43,13 +56,13 @@ class RangeIndicator extends StatelessWidget {
 
   /// The following rules must be respected:
   /// value ∈ [minValue, maxValue]
-  /// if a BorderlineValue is not null then its corresponding OptimalValue must also be not null.
-  /// if a not null a BorderlineValue should always be above (for max) or below (for min) its corresponding OptimalValue.
-  /// a min should always be <= to its corresponding max.
+  /// If a BorderlineValue is not null then its corresponding OptimalValue must also be not null.
+  /// Same for LowValue/HighValue and VeryLowValue/VeryHighValue, each higher range require all the previous ranges to be there.
+  /// If a not null a BorderlineValue should always be above (for max) or below (for min) its corresponding OptimalValue.
+  /// Same for LowValue/HighValue and VeryLowValue/VeryHighValue.
+  /// A min should always be <= to its corresponding max.
   /// By default the whole bar is painted in [barDefaultColor].
-  /// If [minBorderlineValue] is not null then the section from there up to [minOptimalValue] is colored in [barBorderlineColor].
-  /// If [minOptimalValue] is not null then the section from there up to the first of either [maxOptimalValue] or [maxValue] is colored in [barOptimalColor].
-  /// If [maxBorderlineValue] is not null then the section from there down to [maxOptimalValue] is colored in [barOptimalColor].
+  /// More colors are added based on the optional min/max values.
   ///
   /// When using [coloredBarWidth], keep in mind the whole drawing is scaled based on the size requirements given
   /// by the parent, so the actual bar width may not be [coloredBarWidth], but it will be proportional to it.
@@ -62,16 +75,30 @@ class RangeIndicator extends StatelessWidget {
     this.minOptimalValue,
     this.maxBorderlineValue,
     this.minBorderlineValue,
+    this.maxBadValue,
+    this.minBadValue,
+    this.maxVeryBadValue,
+    this.minVeryBadValue,
     required this.textStyle,
     Color? barDefaultColor,
-    Color? barBorderlineColor,
     Color? barOptimalColor,
+    Color? barBorderlineHighColor,
+    Color? barBorderlineLowColor,
+    Color? barBadHighColor,
+    Color? barBadLowColor,
+    Color? barVeryBadHighColor,
+    Color? barVeryBadLowColor,
     Color? cursorLineColor,
     Color? cursorTriangleColor,
     double? coloredBarWidth,
-  })  : barDefaultColor = barDefaultColor ?? AppColors.grey400,
-        barBorderlineColor = barBorderlineColor ?? AppColors.gold,
-        barOptimalColor = barOptimalColor ?? AppColors.purple500,
+  })  : barDefaultColor = barDefaultColor ?? AppColors.biomarkerDefault,
+        barOptimalColor = barOptimalColor ?? AppColors.biomarkerOptimal,
+        barBorderlineHighColor = barBorderlineHighColor ?? AppColors.biomarkerBorderlineHigh,
+        barBorderlineLowColor = barBorderlineLowColor ?? AppColors.biomarkerBorderlineLow,
+        barBadHighColor = barBadHighColor ?? AppColors.biomarkerBadHigh,
+        barBadLowColor = barBadLowColor ?? AppColors.biomarkerBadLow,
+        barVeryBadHighColor = barVeryBadHighColor ?? AppColors.biomarkerVeryBadHigh,
+        barVeryBadLowColor = barVeryBadLowColor ?? AppColors.biomarkerVeryBadLow,
         cursorLineColor = cursorLineColor ?? AppColors.grey700,
         cursorTriangleColor = cursorTriangleColor ?? AppColors.grey700,
         coloredBarWidth = coloredBarWidth ?? 46,
@@ -95,9 +122,18 @@ class RangeIndicator extends StatelessWidget {
               minOptimalValue: minOptimalValue,
               maxBorderlineValue: maxBorderlineValue,
               minBorderlineValue: minBorderlineValue,
+              maxBadValue: maxBadValue,
+              minBadValue: minBadValue,
+              maxVeryBadValue: maxVeryBadValue,
+              minVeryBadValue: minVeryBadValue,
               textStyle: textStyle,
               barDefaultColor: barDefaultColor,
-              barBorderlineColor: barBorderlineColor,
+              barBorderlineHighColor: barBorderlineHighColor,
+              barBorderlineLowColor: barBorderlineLowColor,
+              barBadHighColor: barBadHighColor,
+              barBadLowColor: barBadLowColor,
+              barVeryBadHighColor: barVeryBadHighColor,
+              barVeryBadLowColor: barVeryBadLowColor,
               barOptimalColor: barOptimalColor,
               cursorLineColor: cursorLineColor,
               cursorTriangleColor: cursorTriangleColor,
@@ -117,10 +153,19 @@ class _Painter extends CustomPainter {
   final double? minOptimalValue;
   final double? maxBorderlineValue;
   final double? minBorderlineValue;
+  final double? maxBadValue;
+  final double? minBadValue;
+  final double? maxVeryBadValue;
+  final double? minVeryBadValue;
   final TextStyle textStyle;
   final Color barDefaultColor;
-  final Color barBorderlineColor;
   final Color barOptimalColor;
+  final Color barBorderlineHighColor;
+  final Color barBorderlineLowColor;
+  final Color barBadHighColor;
+  final Color barBadLowColor;
+  final Color barVeryBadHighColor;
+  final Color barVeryBadLowColor;
   final Color cursorLineColor;
   final Color cursorTriangleColor;
   final double coloredBarWidth;
@@ -134,10 +179,19 @@ class _Painter extends CustomPainter {
     required this.minOptimalValue,
     required this.maxBorderlineValue,
     required this.minBorderlineValue,
+    required this.maxBadValue,
+    required this.minBadValue,
+    required this.maxVeryBadValue,
+    required this.minVeryBadValue,
     required this.textStyle,
     required this.barDefaultColor,
-    required this.barBorderlineColor,
     required this.barOptimalColor,
+    required this.barBorderlineHighColor,
+    required this.barBorderlineLowColor,
+    required this.barBadHighColor,
+    required this.barBadLowColor,
+    required this.barVeryBadHighColor,
+    required this.barVeryBadLowColor,
     required this.cursorLineColor,
     required this.cursorTriangleColor,
     required this.coloredBarWidth,
@@ -186,6 +240,27 @@ class _Painter extends CustomPainter {
     double getHeightForValue(double value) =>
         topSidePosition + coloredBarHeight * (1 - value.normalize(minValue, maxValue));
 
+    void drawBarSection({
+      required Color color,
+      required double highValue,
+      required double lowValue,
+    }) {
+      final Paint paint = Paint()
+        ..color = color
+        ..style = PaintingStyle.fill;
+
+      final double startHeight = getHeightForValue(highValue);
+      final double endHeight = getHeightForValue(lowValue);
+
+      final Rect rectangle = Rect.fromLTRB(
+        leftSidePosition,
+        startHeight,
+        rightSidePosition,
+        endHeight,
+      );
+      canvas.drawRect(rectangle, paint);
+    }
+
     {
       /// This will clip the bar to add the rounded corners.
       /// canvas.restore() must be called at the end of this function when the whole bar is drawn to apply the clip.
@@ -199,134 +274,107 @@ class _Painter extends CustomPainter {
         ),
         const Radius.circular(4),
       );
-      // canvas.drawRRect(rectangle, paint);
       canvas.clipRRect(rectangle);
     }
 
-    {
-      /// Draw the whole bar with [barDefaultColor].
-      /// We will draw the other colors (if any) on top of it.
-      final Paint paint = Paint()
-        ..color = barDefaultColor
-        ..style = PaintingStyle.fill;
+    /// First paint the whole bar with [barDefaultColor], any other color will be painted on top.
+    drawBarSection(
+      color: barDefaultColor,
+      highValue: maxValue,
+      lowValue: minValue,
+    );
 
-      final RRect rectangle = RRect.fromRectAndRadius(
-        Rect.fromLTRB(
-          leftSidePosition,
-          topSidePosition,
-          rightSidePosition,
-          topSidePosition + coloredBarHeight,
-        ),
-        const Radius.circular(4),
+    /// If [maxVeryBadValue] is not null draw the section from there down to [maxBadValue] with [barVeryBadHighColor].
+    /// Requirement: if [maxVeryBadValue] is not null then [maxBadValue] should not be null either.
+    if (maxVeryBadValue != null && maxBadValue != null) {
+      drawBarSection(
+        color: barVeryBadHighColor,
+        highValue: maxVeryBadValue!,
+        lowValue: maxBadValue!,
       );
-      canvas.drawRRect(rectangle, paint);
     }
 
-    {
-      /// If [maxBorderlineValue] is not null draw the section from there down to [maxOptimalValue] with [barBorderlineColor].
-      /// Requirement: if [maxBorderlineValue] is not null then [maxOptimalValue] should not be null either.
-      if (maxBorderlineValue != null && maxOptimalValue != null) {
-        final Paint paint = Paint()
-          ..color = barBorderlineColor
-          ..style = PaintingStyle.fill;
-
-        final double startHeight = getHeightForValue(maxBorderlineValue!);
-        final double endHeight = getHeightForValue(maxOptimalValue!);
-
-        final Rect rectangle = Rect.fromLTRB(
-          leftSidePosition,
-          startHeight,
-          rightSidePosition,
-          endHeight,
-        );
-        canvas.drawRect(rectangle, paint);
-      }
+    /// If [maxBadValue] is not null draw the section from there down to [maxBorderlineValue] with [barBadHighColor].
+    /// Requirement: if [maxBadValue] is not null then [maxBorderlineValue] should not be null either.
+    if (maxBadValue != null && maxBorderlineValue != null) {
+      drawBarSection(
+        color: barBadHighColor,
+        highValue: maxBadValue!,
+        lowValue: maxBorderlineValue!,
+      );
     }
 
-    {
-      /// If [minBorderlineValue] is not null draw the section from [minOptimalValue] down to there with [barBorderlineColor].
-      /// Requirement: if [minBorderlineValue] is not null then [minOptimalValue] should not be null either.
-      if (minBorderlineValue != null && minOptimalValue != null) {
-        final Paint paint = Paint()
-          ..color = barBorderlineColor
-          ..style = PaintingStyle.fill;
-
-        final double startHeight = getHeightForValue(minOptimalValue!);
-        final double endHeight = getHeightForValue(minBorderlineValue!);
-
-        final Rect rectangle = Rect.fromLTRB(
-          leftSidePosition,
-          startHeight,
-          rightSidePosition,
-          endHeight,
-        );
-        canvas.drawRect(rectangle, paint);
-      }
+    /// If [maxBorderlineValue] is not null draw the section from there down to [maxOptimalValue] with [barBorderlineHighColor].
+    /// Requirement: if [maxBorderlineValue] is not null then [maxOptimalValue] should not be null either.
+    if (maxBorderlineValue != null && maxOptimalValue != null) {
+      drawBarSection(
+        color: barBorderlineHighColor,
+        highValue: maxBorderlineValue!,
+        lowValue: maxOptimalValue!,
+      );
     }
 
-    {
-      /// If [maxOptimalValue] and [minOptimalValue] are not null draw the section
-      /// from [maxOptimalValue] down to [minOptimalValue] with [barOptimalColor].
-      if (maxOptimalValue != null && minOptimalValue != null) {
-        final Paint paint = Paint()
-          ..color = barOptimalColor
-          ..style = PaintingStyle.fill;
-
-        final double startHeight = getHeightForValue(maxOptimalValue!);
-        final double endHeight = getHeightForValue(minOptimalValue!);
-
-        final Rect rectangle = Rect.fromLTRB(
-          leftSidePosition,
-          startHeight,
-          rightSidePosition,
-          endHeight,
-        );
-        canvas.drawRect(rectangle, paint);
-      }
+    /// If [maxOptimalValue] and [minOptimalValue] are not null draw the section
+    /// from [maxOptimalValue] down to [minOptimalValue] with [barOptimalColor].
+    if (maxOptimalValue != null && minOptimalValue != null) {
+      drawBarSection(
+        color: barOptimalColor,
+        highValue: maxOptimalValue!,
+        lowValue: minOptimalValue!,
+      );
     }
 
-    {
-      /// If [maxOptimalValue] is not null but [minOptimalValue] is null then draw the section
-      /// from [maxOptimalValue] down to [minValue] with [barOptimalColor].
-      if (maxOptimalValue != null && minOptimalValue == null) {
-        final Paint paint = Paint()
-          ..color = barOptimalColor
-          ..style = PaintingStyle.fill;
-
-        final double startHeight = getHeightForValue(maxOptimalValue!);
-        final double endHeight = topSidePosition + coloredBarHeight;
-
-        final Rect rectangle = Rect.fromLTRB(
-          leftSidePosition,
-          startHeight,
-          rightSidePosition,
-          endHeight,
-        );
-        canvas.drawRect(rectangle, paint);
-      }
+    /// If [maxOptimalValue] is not null but [minOptimalValue] is null then draw the section
+    /// from [maxOptimalValue] down to [minValue] with [barOptimalColor].
+    if (maxOptimalValue != null && minOptimalValue == null) {
+      drawBarSection(
+        color: barOptimalColor,
+        highValue: maxOptimalValue!,
+        lowValue: minValue,
+      );
     }
 
-    {
-      /// If [minOptimalValue] is not null but [maxOptimalValue] is null then draw the section
-      /// from [minOptimalValue] up to [maxValue] with [barOptimalColor].
-      if (maxOptimalValue == null && minOptimalValue != null) {
-        final Paint paint = Paint()
-          ..color = barOptimalColor
-          ..style = PaintingStyle.fill;
-
-        final double startHeight = topSidePosition;
-        final double endHeight = getHeightForValue(minOptimalValue!);
-
-        final Rect rectangle = Rect.fromLTRB(
-          leftSidePosition,
-          startHeight,
-          rightSidePosition,
-          endHeight,
-        );
-        canvas.drawRect(rectangle, paint);
-      }
+    /// If [minOptimalValue] is not null but [maxOptimalValue] is null then draw the section
+    /// from [minOptimalValue] up to [maxValue] with [barOptimalColor].
+    if (maxOptimalValue == null && minOptimalValue != null) {
+      drawBarSection(
+        color: barOptimalColor,
+        highValue: maxValue,
+        lowValue: minOptimalValue!,
+      );
     }
 
+    /// If [minBorderlineValue] is not null draw the section from [minOptimalValue] down to there with [barBorderlineLowColor].
+    /// Requirement: if [minBorderlineValue] is not null then [minOptimalValue] should not be null either.
+    if (minBorderlineValue != null && minOptimalValue != null) {
+      drawBarSection(
+        color: barBorderlineLowColor,
+        highValue: minOptimalValue!,
+        lowValue: minBorderlineValue!,
+      );
+    }
+
+    /// If [minBadValue] is not null draw the section from [minBorderlineValue] down to there with [barBadLowColor].
+    /// Requirement: if [minBadValue] is not null then [minBorderlineValue] should not be null either.
+    if (minBadValue != null && minBorderlineValue != null) {
+      drawBarSection(
+        color: barBadLowColor,
+        highValue: minBorderlineValue!,
+        lowValue: minBadValue!,
+      );
+    }
+
+    /// If [minVeryBadValue] is not null draw the section from [minBadValue] down to there with [barVeryBadLowColor].
+    /// Requirement: if [minVeryBadValue] is not null then [minBadValue] should not be null either.
+    if (minVeryBadValue != null && minBadValue != null) {
+      drawBarSection(
+        color: barVeryBadLowColor,
+        highValue: minBadValue!,
+        lowValue: minVeryBadValue!,
+      );
+    }
+
+    /// Apply the clip.
     canvas.restore();
   }
 
@@ -430,18 +478,27 @@ class _Painter extends CustomPainter {
 
   @override
   bool shouldRepaint(_Painter other) =>
+      value != other.value ||
       maxValue != other.maxValue ||
       minValue != other.minValue ||
-      value != other.value ||
-      barDefaultColor != other.barDefaultColor ||
-      barOptimalColor != other.barOptimalColor ||
-      barBorderlineColor != other.barBorderlineColor ||
-      cursorLineColor != other.cursorLineColor ||
-      cursorTriangleColor != other.cursorTriangleColor ||
-      textStyle != other.textStyle ||
       maxOptimalValue != other.maxOptimalValue ||
       minOptimalValue != other.minOptimalValue ||
       maxBorderlineValue != other.maxBorderlineValue ||
       minBorderlineValue != other.minBorderlineValue ||
+      maxBadValue != other.maxBadValue ||
+      minBadValue != other.minBadValue ||
+      maxVeryBadValue != other.maxVeryBadValue ||
+      minVeryBadValue != other.minVeryBadValue ||
+      textStyle != other.textStyle ||
+      barDefaultColor != other.barDefaultColor ||
+      barOptimalColor != other.barOptimalColor ||
+      barBorderlineHighColor != other.barBorderlineHighColor ||
+      barBorderlineLowColor != other.barBorderlineLowColor ||
+      barBadHighColor != other.barBadHighColor ||
+      barBadLowColor != other.barBadLowColor ||
+      barVeryBadHighColor != other.barVeryBadHighColor ||
+      barVeryBadLowColor != other.barVeryBadLowColor ||
+      cursorLineColor != other.cursorLineColor ||
+      cursorTriangleColor != other.cursorTriangleColor ||
       coloredBarWidth != other.coloredBarWidth;
 }

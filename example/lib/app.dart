@@ -5,11 +5,13 @@ import '../utils/extensions.dart';
 
 enum DisplayType {
   rangeIndicator,
+  rangeIndicator2,
   trendLine,
   string,
   stringWithNumbers,
   prefixedNumber,
   erroneousSingleNumber,
+  erroneousSingleNumber2,
   erroneousMultipleNumbers,
   erroneousString,
   erroneousUnknownType,
@@ -120,6 +122,32 @@ class _MyHomePageState extends State<_MyHomePage> {
             unit: '%',
           ),
         ];
+      case DisplayType.rangeIndicator2:
+        return [
+          BiomarkerData(
+            // value: 2.6, // Optimal
+            // value: 2.4, // BorderlineLow
+            value: 1.6,
+            // BadLow
+            // value: 1.0, // VeryBadLow
+            // value: 3.2, // BorderlineHigh
+            // value: 3.9, // BadHigh
+            // value: 4.5, // VeryBadHigh
+            maxValue: 4.5,
+            minValue: 0,
+            maxOptimalValue: 3,
+            minOptimalValue: 2.5,
+            maxBorderlineValue: 3.6,
+            minBorderlineValue: 1.8,
+            maxBadValue: 4,
+            minBadValue: 1.2,
+            maxVeryBadValue: 4.5,
+            minVeryBadValue: 0,
+            name: 'CRR - Cholesterol risk ratio',
+            time: DateTime(2022, 04),
+            unit: '%',
+          ),
+        ];
       case DisplayType.trendLine:
         return [
           _generateTrendLineBiomarker(0.6, DateTime(2022, 02, 03)),
@@ -142,8 +170,8 @@ class _MyHomePageState extends State<_MyHomePage> {
             value: '2.8|2.9',
             name: 'CRR - Cholesterol risk ratio',
             time: DateTime(2022, 03),
-            unit: 'metric F***ing tonnes',
-            minOptimalValue: 9000,
+            unit: '%',
+            minOptimalValue: 4,
           ),
         ];
       case DisplayType.prefixedNumber:
@@ -171,6 +199,24 @@ class _MyHomePageState extends State<_MyHomePage> {
             minOptimalValue: 2,
             maxBorderlineValue: 4.2,
             minBorderlineValue: 1,
+            name: 'CRR - Cholesterol risk ratio',
+            time: DateTime(2022, 04),
+            // unit: '%',
+          ),
+        ];
+      case DisplayType.erroneousSingleNumber2:
+        return [
+          BiomarkerData(
+            value: 2,
+            maxValue: 4.5,
+            minValue: 0,
+            maxOptimalValue: 2.9,
+            minOptimalValue: 2,
+            maxBorderlineValue: 3.2,
+            minBorderlineValue: 1.5,
+            // Missing maxBadValue and minBadValue
+            maxVeryBadValue: 4.5,
+            minVeryBadValue: 0.5,
             name: 'CRR - Cholesterol risk ratio',
             time: DateTime(2022, 04),
             // unit: '%',

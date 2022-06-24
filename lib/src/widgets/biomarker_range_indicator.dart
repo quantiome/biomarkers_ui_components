@@ -11,6 +11,8 @@ class BiomarkerRangeIndicator extends StatelessWidget {
   final Color? barDefaultColor;
   final Color? barOptimalColor;
   final Color? barBorderlineColor;
+  final Color? barBadColor;
+  final Color? barVeryBadColor;
   final Color? cursorLineColor;
   final Color? cursorTriangleColor;
   final double? coloredBarWidth;
@@ -27,8 +29,10 @@ class BiomarkerRangeIndicator extends StatelessWidget {
     required this.biomarker,
     required this.textStyle,
     this.barDefaultColor,
-    this.barBorderlineColor,
     this.barOptimalColor,
+    this.barBorderlineColor,
+    this.barBadColor,
+    this.barVeryBadColor,
     this.cursorLineColor,
     this.cursorTriangleColor,
     this.coloredBarWidth,
@@ -43,10 +47,19 @@ class BiomarkerRangeIndicator extends StatelessWidget {
         minOptimalValue: biomarker.minOptimalValue,
         maxBorderlineValue: biomarker.maxBorderlineValue,
         minBorderlineValue: biomarker.minBorderlineValue,
+        maxBadValue: biomarker.maxBadValue,
+        minBadValue: biomarker.minBadValue,
+        maxVeryBadValue: biomarker.maxVeryBadValue,
+        minVeryBadValue: biomarker.minVeryBadValue,
         textStyle: textStyle,
         barDefaultColor: barDefaultColor,
-        barBorderlineColor: barBorderlineColor,
         barOptimalColor: barOptimalColor,
+        barBorderlineHighColor: barBorderlineColor,
+        barBorderlineLowColor: barBorderlineColor,
+        barBadHighColor: barBadColor,
+        barBadLowColor: barBadColor,
+        barVeryBadHighColor: barVeryBadColor,
+        barVeryBadLowColor: barVeryBadColor,
         cursorLineColor: cursorLineColor,
         cursorTriangleColor: cursorTriangleColor,
         coloredBarWidth: coloredBarWidth,

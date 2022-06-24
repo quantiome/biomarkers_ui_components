@@ -34,7 +34,7 @@ class BiomarkerTrendLine extends StatelessWidget {
         (biomarker) => TrendLinePoint(
           value: biomarker.value,
           time: biomarker.time,
-          color: biomarker.color,
+          color: biomarker.range.color,
         ),
       )
       .toList();
