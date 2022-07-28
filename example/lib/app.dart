@@ -4,6 +4,9 @@ import 'package:groqhealth_biomarkers/groqhealth_biomarkers.dart';
 import '../utils/extensions.dart';
 
 enum DisplayType {
+  muscleFatAnalysis,
+  visceralFatArea,
+  leanBodyMass,
   rangeIndicator,
   rangeIndicator2,
   trendLine,
@@ -39,7 +42,7 @@ class _MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<_MyHomePage> {
-  DisplayType _displayType = DisplayType.rangeIndicator;
+  DisplayType _displayType = DisplayType.values.first;
   List<String> errorMessages = [];
 
   @override
@@ -107,6 +110,65 @@ class _MyHomePageState extends State<_MyHomePage> {
 
   List<BiomarkerData> get _biomarkers {
     switch (_displayType) {
+      case DisplayType.muscleFatAnalysis:
+        return [
+          BiomarkerData(
+            value: 80,
+            maxValue: 300,
+            minValue: 40,
+            maxOptimalValue: 100,
+            minOptimalValue: 50,
+            name: 'Weight',
+            time: DateTime(2022, 04),
+            unit: 'lbs',
+          ),
+          BiomarkerData(
+            value: 33,
+            maxValue: 100,
+            minValue: 20,
+            maxOptimalValue: 80,
+            minOptimalValue: 30,
+            name: 'Skeletal Muscle Mass',
+            time: DateTime(2022, 04),
+            unit: 'lbs',
+          ),
+          BiomarkerData(
+            value: 21,
+            maxValue: 200,
+            minValue: 0,
+            maxOptimalValue: 40,
+            minOptimalValue: 0,
+            name: 'Body Fat Mass',
+            time: DateTime(2022, 04),
+            unit: 'lbs',
+          ),
+        ];
+      case DisplayType.visceralFatArea:
+        return [
+          BiomarkerData(
+            value: 100,
+            maxValue: 200,
+            minValue: 0,
+            maxOptimalValue: 100,
+            minOptimalValue: 0,
+            name: 'Visceral Fat Area',
+            time: DateTime(2022, 04),
+            unit: 'cm²',
+          ),
+        ];
+      case DisplayType.leanBodyMass:
+        return [
+          BiomarkerData(
+            value: 10,
+            maxValue: 200,
+            minValue: 0,
+            maxOptimalValue: 70,
+            minOptimalValue: 5,
+            name: 'Lean Body Mass',
+            time: DateTime(2022, 04),
+            unit: 'lbs',
+          ),
+        ];
       case DisplayType.rangeIndicator:
         return [
           BiomarkerData(
@@ -325,51 +387,87 @@ class _MyHomePageState extends State<_MyHomePage> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        backgroundColor: Colors.white,
-        floatingActionButton: FloatingActionButton(
-          onPressed: _onFloatingActionButtonTap,
-          child: Icon(Icons.swap_horiz),
+  Widget build(BuildContext context) {
+    late final Widget child;
+    if (_displayType == DisplayType.muscleFatAnalysis) {
+      child = Container(
+        color: Colors.black12,
+        padding: const EdgeInsets.all(8),
+        child: Align(
+          alignment: Alignment.topLeft,
+          child: BiomarkersMuscleFatAnalysis(
+            weight: _biomarkers[0],
+            skeletalMuscleMass: _biomarkers[1],
+            bodyFatMass: _biomarkers[2],
+          ),
         ),
-        body: SafeArea(
-          child: Center(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(_displayType.toString()),
-                    SizedBox(height: 48),
-                    ConstrainedBox(
-                      constraints: BoxConstraints(maxWidth: 400),
-                      child: BiomarkerCard(
-                        biomarkers: _biomarkers,
-                        note: 'You’re on a roll. Keep doing what you’re doing!',
-                      ),
-                    ),
-                    if (errorMessages.isNotEmpty) ...[
-                      const SizedBox(height: 36),
-                      const Text('Some of the data is invalid!'),
-                      const SizedBox(height: 26),
-                    ],
-                    ...errorMessages
-                        .map<Widget>(
-                          (message) => Text(
-                            message,
-                            style: TextStyle(
-                              color: Colors.redAccent,
-                              fontSize: 14,
-                            ),
-                          ),
-                        )
-                        .toList()
-                        .interlacedWith(const SizedBox(height: 16)),
+      );
+    } else if (_displayType == DisplayType.visceralFatArea) {
+      child = Container(
+        color: Colors.black12,
+        padding: const EdgeInsets.all(8),
+        child: BiomarkerVisceralFatArea(
+          visceralFatArea: _biomarkers.first.convertToKnownType() as BiomarkerNumber,
+          userAge: 42,
+        ),
+      );
+    } else if (_displayType == DisplayType.leanBodyMass) {
+      child = Container(
+        color: Colors.black12,
+        padding: const EdgeInsets.all(8),
+        child: BiomarkerLeanBodyMass(
+          leanBodyMass: _biomarkers.first.convertToKnownType() as BiomarkerNumber,
+        ),
+      );
+    } else {
+      child = BiomarkerCard(
+        biomarkers: _biomarkers,
+        note: 'You’re on a roll. Keep doing what you’re doing!',
+      );
+    }
+    return Scaffold(
+      backgroundColor: Colors.white,
+      floatingActionButton: FloatingActionButton(
+        onPressed: _onFloatingActionButtonTap,
+        child: Icon(Icons.swap_horiz),
+      ),
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(_displayType.toString()),
+                  SizedBox(height: 48),
+                  ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: 400),
+                    child: child,
+                  ),
+                  if (errorMessages.isNotEmpty) ...[
+                    const SizedBox(height: 36),
+                    const Text('Some of the data is invalid!'),
+                    const SizedBox(height: 26),
                   ],
-                ),
+                  ...errorMessages
+                      .map<Widget>(
+                        (message) => Text(
+                          message,
+                          style: TextStyle(
+                            color: Colors.redAccent,
+                            fontSize: 14,
+                          ),
+                        ),
+                      )
+                      .toList()
+                      .interlacedWith(const SizedBox(height: 16)),
+                ],
               ),
             ),
           ),
         ),
-      );
+      ),
+    );
+  }
 }

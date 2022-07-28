@@ -159,6 +159,8 @@ class BiomarkerNumber {
 
   static BiomarkerNumberRange _computeRange({
     required double value,
+    required double maxValue,
+    required double minValue,
     required double? maxOptimalValue,
     required double? minOptimalValue,
     required double? maxBorderlineValue,
@@ -168,6 +170,10 @@ class BiomarkerNumber {
     required double? maxVeryBadValue,
     required double? minVeryBadValue,
   }) {
+    if (value > maxValue || value < minValue) {
+      return BiomarkerNumberRange.unknown;
+    }
+
     if (maxVeryBadValue != null) {
       if (value > maxVeryBadValue) {
         return BiomarkerNumberRange.unknown;
@@ -265,6 +271,8 @@ class BiomarkerNumber {
   }) {
     range = _computeRange(
       value: value,
+      maxValue: maxValue,
+      minValue: minValue,
       maxOptimalValue: maxOptimalValue,
       minOptimalValue: minOptimalValue,
       maxBorderlineValue: maxBorderlineValue,

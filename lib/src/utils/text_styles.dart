@@ -74,4 +74,34 @@ abstract class AppTextStyles {
     fontSize: 14,
     fontFamily: AppFonts.avenirBook,
   );
+
+  static const TextStyle biomarkerVisceralFatAreaGraphTitle = TextStyle(
+    color: AppColors.grey700,
+    fontSize: 16,
+    fontFamily: AppFonts.avenirMedium,
+  );
+
+  static const TextStyle biomarkerVisceralFatAreaGraph = TextStyle(
+    color: AppColors.grey700,
+    fontSize: 16,
+    fontFamily: AppFonts.avenirMedium,
+  );
+
+  static const TextStyle biomarkerLeanBodyMassTitle = TextStyle(
+    color: AppColors.grey700,
+    fontSize: 16,
+    fontFamily: AppFonts.avenirMedium,
+  );
+
+  static const TextStyle biomarkerLeanBodyMassText = TextStyle(
+    color: AppColors.grey700,
+    fontSize: 12,
+    fontFamily: AppFonts.avenirMedium,
+  );
+
+  static const TextStyle biomarkersMuscleFatAnalysisText = TextStyle(
+    color: AppColors.grey700,
+    fontSize: 16,
+    fontFamily: AppFonts.avenirMedium,
+  );
 }

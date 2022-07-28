@@ -16,6 +16,10 @@ The package contains the following UI components:
   them gracefully.
 - BiomarkerValidator: Contains tools to perform data validation before displaying BiomarkerCard (meant for the clinic portal).
   Will given details about the errors found in the data for debugging.
+- BiomarkerLeanBodyMass:
+  Meant to display a biomarker of type Lean Body Mass with a special UI.
+- BiomarkerVisceralFatArea
+  Meant to display a biomarker of type Visceral Fat Area with a special UI.
 
 Figma design link: https://www.figma.com/file/Tfh5DGMt6ECmNQIKvfh2CE/Mobile?node-id=4959%3A29497
 

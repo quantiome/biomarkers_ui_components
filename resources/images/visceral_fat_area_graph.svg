@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><!---->
+<!--Origin of graph at 9.3 % of width, 90% of height, with origin of image at top right corner.-->
+<!--Each x unit is 0.890% of width.-->
+<!--Each y unit is 0.428% of height.-->
+<svg width="111.4" height="80.911" version="1.1" viewBox="0 0 111.4 80.911"
+    xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(-65.209 -211.19)">
+        <path d="m75.54 211.19v72.797" fill="none" stroke="#aebed7" stroke-width=".69943" />
+        <path d="m75.676 283.64h100.93" fill="none" stroke="#aebed7" stroke-width=".7" />
+        <path
+            d="m100.03 249.39c-5.0614 2.8807-9.3048 7.344-11.826 12.592-1.5788 3.6548-3.0578 7.4416-3.7787 11.346-0.7536 2.7002-0.67583 6.7038 2.7709 7.2564 2.7501 0.0559 5.3204-1.1482 7.9846-1.5973 4.5835-0.85289 9.0083-2.2692 13.488-3.5258 5.1532-1.2434 10.268-2.6243 15.316-4.2408 4.064-0.7696 7.8873-2.3791 11.873-3.4407 5.4594-1.6026 10.913-4.1522 14.573-8.6465 2.0261-2.8558 3.6365-6.0296 4.6412-9.3758-0.88744-0.83398-2.4962-0.1631-3.6887-0.36683z"
+            fill="#b849e5" />
+        <path
+            d="m100.84 248.71c3.2334-2.2031 6.6918-4.031 10.163-5.8256 5.5952-2.9477 11.27-5.7456 16.948-8.5289 5.1677-2.3052 10.276-4.7504 15.482-6.9649 4.4415-1.7274 8.9402-3.8527 13.808-3.794 2.026-0.087 3.6587 1.826 3.6176 3.7872 0.15682 2.5046-0.54187 4.9695-1.082 7.3946-1.455 4.678-2.8682 9.3744-4.5926 13.962-18.115-0.0102-36.229-0.0205-54.344-0.0307z"
+            fill="#f8fafc" />
+        <g fill="none" stroke="#aebed7">
+            <path d="m73.457 249.12h103.15" stroke-width=".8" />
+            <g stroke-width=".7">
+                <path d="m75.192 214.44h-1.6021" />
+                <path d="m75.187 231.77h-1.6021" />
+                <path d="m75.182 266.17h-1.5887" />
+                <path d="m95.621 283.99v2.086" />
+                <path d="m115.44 283.99v2.0697" />
+                <path d="m135.19 283.98v2.0941" />
+                <path d="m154.9 283.97v2.1268" />
+            </g>
+        </g>
+        <g fill="#6c7889" font-family="Avenir" stroke-width=".26458">
+            <text x="165.94746" y="290.74594" font-size="5.6444px" style="line-height:1.25"
+                xml:space="preserve"><tspan x="165.94746" y="290.74594" fill="#6c7889" font-family="Avenir" font-size="5.6444px" stroke-width=".26458">Age</tspan></text>
+            <g font-size="4.2333px">
+                <text x="65.00531" y="215.90068" style="line-height:1.25" xml:space="preserve"><tspan x="65.00531" y="215.90068" fill="#6c7889" font-family="Avenir" font-size="4.2333px" stroke-width=".26458">200</tspan></text>
+                <text x="65.031242" y="233.20949" style="line-height:1.25" xml:space="preserve"><tspan x="65.031242" y="233.20949" fill="#6c7889" font-family="Avenir" font-size="4.2333px" stroke-width=".26458">150</tspan></text>
+                <text x="65.00531" y="250.51826" style="line-height:1.25" xml:space="preserve"><tspan x="65.00531" y="250.51826" fill="#6c7889" font-family="Avenir" font-size="4.2333px" stroke-width=".26458">100</tspan></text>
+                <text x="67.361755" y="267.61957" style="line-height:1.25" xml:space="preserve"><tspan x="67.361755" y="267.61957" fill="#6c7889" font-family="Avenir" font-size="4.2333px" stroke-width=".26458">50</tspan></text>
+                <text x="93.273071" y="290.21225" style="line-height:1.25" xml:space="preserve"><tspan x="93.273071" y="290.21225" fill="#6c7889" font-family="Avenir" font-size="4.2333px" stroke-width=".26458">20</tspan></text>
+                <text x="113.10672" y="290.21225" style="line-height:1.25" xml:space="preserve"><tspan x="113.10672" y="290.21225" fill="#6c7889" font-family="Avenir" font-size="4.2333px" stroke-width=".26458">40</tspan></text>
+                <text x="132.88319" y="290.21225" style="line-height:1.25" xml:space="preserve"><tspan x="132.88319" y="290.21225" fill="#6c7889" font-family="Avenir" font-size="4.2333px" stroke-width=".26458">60</tspan></text>
+                <text x="152.55257" y="290.21225" style="line-height:1.25" xml:space="preserve"><tspan x="152.55257" y="290.21225" fill="#6c7889" font-family="Avenir" font-size="4.2333px" stroke-width=".26458">80</tspan></text>
+            </g>
+        </g>
+    </g>
+</svg>

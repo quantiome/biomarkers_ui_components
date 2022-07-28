@@ -18,7 +18,7 @@ class BiomarkerProcessingException implements Exception {
   String toString() => "The biomarker '${biomarker.name}'"
       ' of ${biomarker.time.toNumYearNumMonthNumDayString()}'
       ' (with value = ${biomarker.value})'
-      ' has invalid data${errors.isEmpty ? '.' : ':${errors.fold('', (String aggregate, error) => aggregate + '\n - $error')}'}';
+      ' has invalid data${errors.isEmpty ? '.' : ':${errors.fold('', (String aggregate, error) => '$aggregate\n - $error')}'}';
 }
 
 @immutable
@@ -31,7 +31,7 @@ class BiomarkersMismatchException implements Exception {
 
   @override
   String toString() => 'The biomarkers are of mismatching types:'
-      '${biomarkers.fold('', (String aggregate, biomarker) => aggregate + '\n - ${biomarker.name}: ${biomarker.runtimeType}')}';
+      '${biomarkers.fold('', (String aggregate, biomarker) => '$aggregate\n - ${biomarker.name}: ${biomarker.runtimeType}')}';
 }
 
 class BiomarkersDuplicatesException implements Exception {
@@ -43,7 +43,7 @@ class BiomarkersDuplicatesException implements Exception {
 
   @override
   String toString() => 'There is more than one biomarker with the exact same data at these dates:'
-      '${biomarkers.fold('', (String aggregate, biomarker) => aggregate + '\n - ${biomarker.time}')}';
+      '${biomarkers.fold('', (String aggregate, biomarker) => '$aggregate\n - ${biomarker.time}')}';
 }
 
 class BiomarkersDifferentNamesException implements Exception {
@@ -56,5 +56,5 @@ class BiomarkersDifferentNamesException implements Exception {
   @override
   String toString() =>
       'Some of these biomarkers have different names, are you sure they should be displayed together as a group?:'
-      '${biomarkers.fold('', (String aggregate, biomarker) => aggregate + '\n - ${biomarker.name}: ${biomarker.time}')}';
+      '${biomarkers.fold('', (String aggregate, biomarker) => '$aggregate\n - ${biomarker.name}: ${biomarker.time}')}';
 }

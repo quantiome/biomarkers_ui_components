@@ -1,3 +1,10 @@
+## [3.1.0] - 2022-07-28
+* Added BiomarkerLeanBodyMass widget.
+* Added BiomarkerVisceralFatArea widget.
+* Added BiomarkersMuscleFatAnalysis widget.
+* Updated example app to add new examples.
+* BiomarkerCardRangeIndicator: Fixed range indicator dot color for values above max and under min.
+
 ## [3.0.0] - 2022-06-24
 * BiomarkerCardRangeIndicator: added colored range indicator dot and text. 
 * BiomarkerRangeIndicator and RangeIndicator: Added `maxBadValue`, `minBadValue`, `maxVeryBadValue` and `minVeryBadValue`. 

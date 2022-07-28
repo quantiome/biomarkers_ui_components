@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:groqhealth_biomarkers/src/widgets/biomarker_card/biomarker_card_fallback.dart';
 
 import '../../models/biomarker_data.dart';
 import '../../models/biomarker_number.dart';
 import '../../models/biomarker_string.dart';
+import 'biomarker_card_fallback.dart';
 import 'biomarker_card_range_indicator.dart';
 import 'biomarker_card_string.dart';
 import 'biomarker_card_trend_line.dart';
