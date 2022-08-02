@@ -269,6 +269,16 @@ class BiomarkerNumber {
       }
     }
 
+    if (maxOptimalValue != null) {
+      if (value > maxOptimalValue) {
+        return BiomarkerNumberRange.unknown;
+      } else if (minOptimalValue == null) {
+        return BiomarkerNumberRange.optimal;
+      } else if (value > minOptimalValue) {
+        return BiomarkerNumberRange.optimal;
+      }
+    }
+
     if (minVeryBadValue != null) {
       if (value < minVeryBadValue) {
         return BiomarkerNumberRange.unknown;
@@ -302,7 +312,17 @@ class BiomarkerNumber {
       }
     }
 
-    return BiomarkerNumberRange.optimal;
+    if (minOptimalValue != null) {
+      if (value < minOptimalValue) {
+        return BiomarkerNumberRange.unknown;
+      } else if (maxOptimalValue == null) {
+        return BiomarkerNumberRange.optimal;
+      } else if (value < maxOptimalValue) {
+        return BiomarkerNumberRange.optimal;
+      }
+    }
+
+    return BiomarkerNumberRange.unknown;
   }
 
   /// The following rules must be respected:

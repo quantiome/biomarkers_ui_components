@@ -1,3 +1,6 @@
+## [4.0.1] - 2022-08-02
+* BiomarkerNumber: Fixed bug in computation of `range`.
+
 ## [4.0.0] - 2022-08-02
 * *Breaking change:* Removed BiomarkerRangeIndicator.
 * BiomarkerNumber: Now allowing null for `maxValue` and `minValue`.
