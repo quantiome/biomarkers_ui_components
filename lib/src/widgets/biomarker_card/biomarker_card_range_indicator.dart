@@ -4,7 +4,7 @@ import '../../models/biomarker_number.dart';
 import '../../utils/colors.dart';
 import '../../utils/extensions.dart';
 import '../../utils/text_styles.dart';
-import '../biomarker_range_indicator.dart';
+import '../range_indicator.dart';
 
 class BiomarkerCardRangeIndicator extends StatelessWidget {
   final BiomarkerNumber biomarker;
@@ -93,14 +93,27 @@ class BiomarkerCardRangeIndicator extends StatelessWidget {
         style: AppTextStyles.biomarkerNote,
       );
 
-  Widget _buildBiomarkerRangeIndicator() => BiomarkerRangeIndicator(
-        biomarker: biomarker,
+  Widget _buildBiomarkerRangeIndicator() => RangeIndicator(
+        value: biomarker.value.clampToDouble(biomarker.minValue!, biomarker.maxValue!),
+        maxValue: biomarker.maxValue!,
+        minValue: biomarker.minValue!,
+        maxOptimalValue: biomarker.maxOptimalValue,
+        minOptimalValue: biomarker.minOptimalValue,
+        maxBorderlineValue: biomarker.maxBorderlineValue,
+        minBorderlineValue: biomarker.minBorderlineValue,
+        maxBadValue: biomarker.maxBadValue,
+        minBadValue: biomarker.minBadValue,
+        maxVeryBadValue: biomarker.maxVeryBadValue,
+        minVeryBadValue: biomarker.minVeryBadValue,
         textStyle: AppTextStyles.biomarkerRangeIndicatorMinMaxValues,
         barDefaultColor: AppColors.biomarkerDefault,
         barOptimalColor: AppColors.biomarkerOptimal,
-        barBorderlineColor: AppColors.biomarkerBorderlineLow,
-        barBadColor: AppColors.biomarkerBadLow,
-        barVeryBadColor: AppColors.biomarkerVeryBadLow,
+        barBorderlineHighColor: AppColors.biomarkerBorderlineHigh,
+        barBorderlineLowColor: AppColors.biomarkerBorderlineLow,
+        barBadHighColor: AppColors.biomarkerBadHigh,
+        barBadLowColor: AppColors.biomarkerBadLow,
+        barVeryBadHighColor: AppColors.biomarkerVeryBadHigh,
+        barVeryBadLowColor: AppColors.biomarkerVeryBadLow,
         cursorLineColor: AppColors.grey700,
         cursorTriangleColor: AppColors.grey700,
         coloredBarWidth: 46,
@@ -130,14 +143,16 @@ class BiomarkerCardRangeIndicator extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(width: 8),
-              Padding(
-                padding: const EdgeInsets.only(right: 40),
-                child: SizedBox(
-                  height: 220,
-                  child: _buildBiomarkerRangeIndicator(),
+              if (biomarker.maxValue != null && biomarker.minValue != null) ...[
+                const SizedBox(width: 8),
+                Padding(
+                  padding: const EdgeInsets.only(right: 40),
+                  child: SizedBox(
+                    height: 220,
+                    child: _buildBiomarkerRangeIndicator(),
+                  ),
                 ),
-              ),
+              ]
             ],
           ),
           if (_hasNote) ...[

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:groqhealth_biomarkers/groqhealth_biomarkers.dart';
 
+import '../../models/biomarker_data.dart';
 import '../../utils/extensions.dart';
 import '../../utils/text_styles.dart';
 

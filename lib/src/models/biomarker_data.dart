@@ -92,49 +92,35 @@ class BiomarkerData {
     }
 
     /// The value is a number.
-    final bool isNumberValid = numberValue != null;
-    final bool isMaxValueValid = maxValue != null;
-    final bool isMinValueValid = minValue != null;
 
-    final List<String> errors = [];
-    if (!isMaxValueValid || !isMinValueValid) {
-      if (!isNumberValid) errors.add('Invalid number = $numberValue');
-      if (!isMaxValueValid) errors.add('Invalid maxValue = $maxValue');
-      if (!isMinValueValid) errors.add('Invalid minValue = $minValue');
-    } else {
-      final List<String> validationErrors = BiomarkerNumber.getValidationRules(
-        maxValue: maxValue!,
-        minValue: minValue!,
-        maxOptimalValue: maxOptimalValue,
-        minOptimalValue: minOptimalValue,
-        maxBorderlineValue: maxBorderlineValue,
-        minBorderlineValue: minBorderlineValue,
-        maxBadValue: maxBadValue,
-        minBadValue: minBadValue,
-        maxVeryBadValue: maxVeryBadValue,
-        minVeryBadValue: minVeryBadValue,
-      ).where((rule) => !rule.isRespected).map((rule) => rule.errorMessage).toList();
-      if (validationErrors.isNotEmpty) {
-        if (!isNumberValid) errors.add('Invalid number = $numberValue');
-        for (final String validationError in validationErrors) {
-          errors.add(validationError);
-        }
-      } else if (!isNumberValid) {
-        errors.add('Invalid number = $numberValue');
-      }
+    final List<String> validationErrors = BiomarkerNumber.getValidationRules(
+      maxValue: maxValue,
+      minValue: minValue,
+      maxOptimalValue: maxOptimalValue,
+      minOptimalValue: minOptimalValue,
+      maxBorderlineValue: maxBorderlineValue,
+      minBorderlineValue: minBorderlineValue,
+      maxBadValue: maxBadValue,
+      minBadValue: minBadValue,
+      maxVeryBadValue: maxVeryBadValue,
+      minVeryBadValue: minVeryBadValue,
+    ).where((rule) => !rule.isRespected).map((rule) => rule.errorMessage).toList();
+
+    if (numberValue == null) {
+      validationErrors.insert(0, 'Invalid number = $numberValue');
     }
 
-    if (errors.isNotEmpty) {
+    if (validationErrors.isNotEmpty) {
       throw BiomarkerProcessingException(
-        errors: errors,
+        errors: validationErrors,
         biomarker: this,
       );
     }
 
     return BiomarkerNumber(
       value: numberValue!,
-      maxValue: maxValue!,
-      minValue: minValue!,
+      maxValue: maxValue,
+      minValue: minValue,
       maxOptimalValue: maxOptimalValue,
       minOptimalValue: minOptimalValue,
       maxBorderlineValue: maxBorderlineValue,

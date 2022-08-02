@@ -13,6 +13,10 @@ enum DisplayType {
   string,
   stringWithNumbers,
   prefixedNumber,
+  withoutMinMax,
+  withoutMinMaxButWithOptimal,
+  withoutMinButWithMax,
+  withoutMinMaxMultiple,
   erroneousSingleNumber,
   erroneousSingleNumber2,
   erroneousMultipleNumbers,
@@ -249,6 +253,57 @@ class _MyHomePageState extends State<_MyHomePage> {
             name: 'CRR - Cholesterol risk ratio',
             time: DateTime(2022, 04),
             // unit: '%',
+          ),
+        ];
+      case DisplayType.withoutMinMax:
+        return [
+          BiomarkerData(
+            value: 30,
+            name: 'CRR - Cholesterol risk ratio',
+            time: DateTime(2022, 04),
+            unit: '%',
+          ),
+        ];
+      case DisplayType.withoutMinMaxButWithOptimal:
+        return [
+          BiomarkerData(
+            value: 30,
+            maxOptimalValue: 50,
+            minOptimalValue: 5,
+            name: 'CRR - Cholesterol risk ratio',
+            time: DateTime(2022, 04),
+            unit: '%',
+          ),
+        ];
+      case DisplayType.withoutMinButWithMax:
+        return [
+          BiomarkerData(
+            value: 30,
+            maxOptimalValue: 50,
+            name: 'CRR - Cholesterol risk ratio',
+            time: DateTime(2022, 04),
+            unit: '%',
+          ),
+        ];
+      case DisplayType.withoutMinMaxMultiple:
+        return [
+          BiomarkerData(
+            value: 30,
+            name: 'CRR - Cholesterol risk ratio',
+            time: DateTime(2022, 01),
+            unit: '%',
+          ),
+          BiomarkerData(
+            value: 27,
+            name: 'CRR - Cholesterol risk ratio',
+            time: DateTime(2022, 02),
+            unit: '%',
+          ),
+          BiomarkerData(
+            value: 35,
+            name: 'CRR - Cholesterol risk ratio',
+            time: DateTime(2022, 03),
+            unit: '%',
           ),
         ];
       case DisplayType.erroneousSingleNumber:

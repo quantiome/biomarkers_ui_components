@@ -62,8 +62,8 @@ extension BiomarkerNumberRangeExtension on BiomarkerNumberRange {
 @immutable
 class BiomarkerNumber {
   static List<BiomarkerValidationRule> getValidationRules({
-    required double maxValue,
-    required double minValue,
+    required double? maxValue,
+    required double? minValue,
     required double? maxOptimalValue,
     required double? minOptimalValue,
     required double? maxBorderlineValue,
@@ -75,17 +75,25 @@ class BiomarkerNumber {
   }) =>
       [
         BiomarkerValidationRule(
-          rule: () => minValue <= maxValue,
+          rule: () => maxValue == null || minValue == null || minValue <= maxValue,
           errorMessage: 'minValue must be inferior to maxValue => minValue = $minValue, maxValue = $maxValue',
         ),
         ///////////////////////////
         BiomarkerValidationRule(
-          rule: () => maxOptimalValue == null || maxOptimalValue >= minValue && maxOptimalValue <= maxValue,
+          rule: () =>
+              maxValue == null ||
+              minValue == null ||
+              maxOptimalValue == null ||
+              (maxOptimalValue >= minValue && maxOptimalValue <= maxValue),
           errorMessage:
               'maxOptimalValue (if specified) must be in [minValue, maxValue] => $maxOptimalValue is not in [$minValue, $maxValue]',
         ),
         BiomarkerValidationRule(
-          rule: () => minOptimalValue == null || minOptimalValue >= minValue && minOptimalValue <= maxValue,
+          rule: () =>
+              maxValue == null ||
+              minValue == null ||
+              minOptimalValue == null ||
+              (minOptimalValue >= minValue && minOptimalValue <= maxValue),
           errorMessage:
               'minOptimalValue (if specified) must be in [minValue, maxValue] => $minOptimalValue is not in [$minValue, $maxValue]',
         ),
@@ -97,6 +105,8 @@ class BiomarkerNumber {
         ///////////////////////////
         BiomarkerValidationRule(
           rule: () =>
+              maxValue == null ||
+              minValue == null ||
               maxVeryBadValue == null ||
               (maxVeryBadValue <= maxValue && maxBadValue != null && maxVeryBadValue >= maxBadValue),
           errorMessage:
@@ -104,6 +114,8 @@ class BiomarkerNumber {
         ),
         BiomarkerValidationRule(
           rule: () =>
+              maxValue == null ||
+              minValue == null ||
               maxBadValue == null ||
               (maxBadValue <= maxValue && maxBorderlineValue != null && maxBadValue >= maxBorderlineValue),
           errorMessage:
@@ -111,6 +123,8 @@ class BiomarkerNumber {
         ),
         BiomarkerValidationRule(
           rule: () =>
+              maxValue == null ||
+              minValue == null ||
               maxBorderlineValue == null ||
               (maxBorderlineValue <= maxValue && maxOptimalValue != null && maxBorderlineValue >= maxOptimalValue),
           errorMessage:
@@ -119,6 +133,8 @@ class BiomarkerNumber {
         ///////////////////////////
         BiomarkerValidationRule(
           rule: () =>
+              maxValue == null ||
+              minValue == null ||
               minVeryBadValue == null ||
               (minVeryBadValue >= minValue && minBadValue != null && minBadValue >= minVeryBadValue),
           errorMessage:
@@ -126,6 +142,8 @@ class BiomarkerNumber {
         ),
         BiomarkerValidationRule(
           rule: () =>
+              maxValue == null ||
+              minValue == null ||
               minBadValue == null ||
               (minBadValue >= minValue && minBorderlineValue != null && minBorderlineValue >= minBadValue),
           errorMessage:
@@ -133,6 +151,8 @@ class BiomarkerNumber {
         ),
         BiomarkerValidationRule(
           rule: () =>
+              maxValue == null ||
+              minValue == null ||
               minBorderlineValue == null ||
               (minBorderlineValue >= minValue && minOptimalValue != null && minOptimalValue >= minBorderlineValue),
           errorMessage:
@@ -141,8 +161,8 @@ class BiomarkerNumber {
       ];
 
   final double value;
-  final double maxValue;
-  final double minValue;
+  late final double? maxValue;
+  late final double? minValue;
   final double? maxOptimalValue;
   final double? minOptimalValue;
   final double? maxBorderlineValue;
@@ -157,10 +177,48 @@ class BiomarkerNumber {
   final String? prefix;
   late final BiomarkerNumberRange range;
 
+  /// If [maxValue] is null set it to the highest know max value (if any).
+  static double? _computeInferredMaxValue({
+    required double? maxOptimalValue,
+    required double? maxBorderlineValue,
+    required double? maxBadValue,
+    required double? maxVeryBadValue,
+  }) {
+    if (maxVeryBadValue != null) {
+      return maxVeryBadValue;
+    } else if (maxBadValue != null) {
+      return maxBadValue;
+    } else if (maxBorderlineValue != null) {
+      return maxBorderlineValue;
+    } else if (maxOptimalValue != null) {
+      return maxOptimalValue;
+    }
+    return null;
+  }
+
+  /// If [minValue] is null set it to the lowest know min value (if any).
+  static double? _computeInferredMinValue({
+    required double? minOptimalValue,
+    required double? minBorderlineValue,
+    required double? minBadValue,
+    required double? minVeryBadValue,
+  }) {
+    if (minVeryBadValue != null) {
+      return minVeryBadValue;
+    } else if (minBadValue != null) {
+      return minBadValue;
+    } else if (minBorderlineValue != null) {
+      return minBorderlineValue;
+    } else if (minOptimalValue != null) {
+      return minOptimalValue;
+    }
+    return null;
+  }
+
   static BiomarkerNumberRange _computeRange({
     required double value,
-    required double maxValue,
-    required double minValue,
+    required double? maxValue,
+    required double? minValue,
     required double? maxOptimalValue,
     required double? minOptimalValue,
     required double? maxBorderlineValue,
@@ -170,6 +228,10 @@ class BiomarkerNumber {
     required double? maxVeryBadValue,
     required double? minVeryBadValue,
   }) {
+    if (maxValue == null || minValue == null) {
+      return BiomarkerNumberRange.unknown;
+    }
+
     if (value > maxValue || value < minValue) {
       return BiomarkerNumberRange.unknown;
     }
@@ -254,8 +316,8 @@ class BiomarkerNumber {
   /// More colors are added based on the optional min/max values.
   BiomarkerNumber({
     required this.value,
-    required this.maxValue,
-    required this.minValue,
+    double? maxValue,
+    double? minValue,
     this.maxOptimalValue,
     this.minOptimalValue,
     this.maxBorderlineValue,
@@ -269,10 +331,32 @@ class BiomarkerNumber {
     this.unit,
     this.prefix,
   }) {
+    if (maxValue == null) {
+      this.maxValue = _computeInferredMaxValue(
+        maxOptimalValue: maxOptimalValue,
+        maxBorderlineValue: maxBorderlineValue,
+        maxBadValue: maxBadValue,
+        maxVeryBadValue: maxVeryBadValue,
+      );
+    } else {
+      this.maxValue = maxValue;
+    }
+
+    if (minValue == null) {
+      this.minValue = _computeInferredMinValue(
+        minOptimalValue: minOptimalValue,
+        minBorderlineValue: minBorderlineValue,
+        minBadValue: minBadValue,
+        minVeryBadValue: minVeryBadValue,
+      );
+    } else {
+      this.minValue = minValue;
+    }
+
     range = _computeRange(
       value: value,
-      maxValue: maxValue,
-      minValue: minValue,
+      maxValue: this.maxValue,
+      minValue: this.minValue,
       maxOptimalValue: maxOptimalValue,
       minOptimalValue: minOptimalValue,
       maxBorderlineValue: maxBorderlineValue,

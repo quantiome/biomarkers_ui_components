@@ -1,3 +1,12 @@
+## [4.0.0] - 2022-08-02
+* *Breaking change:* Removed BiomarkerRangeIndicator.
+* BiomarkerNumber: Now allowing null for `maxValue` and `minValue`.
+* BiomarkerNumber: If `maxValue` is null it will be inferred from the highest know max value (if any).
+* BiomarkerNumber: If `minValue` is null it will be inferred from the lowest know min value (if any).
+* BiomarkerCardRangeIndicator: If any of `maxValue` or `minValue` are null then the `BiomarkerNumberRange` is hidden.
+* BiomarkerValidator: Updated `getValidationRules` to allow `maxValue` and `minValue` to be null.
+* Updated example app to add new examples.
+
 ## [3.1.0] - 2022-07-28
 * Added BiomarkerLeanBodyMass widget.
 * Added BiomarkerVisceralFatArea widget.

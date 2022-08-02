@@ -10,7 +10,6 @@ export 'src/utils/biomarker_validator.dart' show BiomarkerValidator;
 export 'src/utils/biomarker_validator.dart' show BiomarkerValidationResult;
 export 'src/widgets/biomarker_card/biomarker_card.dart' show BiomarkerCard;
 export 'src/widgets/biomarker_lean_body_mass.dart' show BiomarkerLeanBodyMass;
-export 'src/widgets/biomarker_range_indicator.dart' show BiomarkerRangeIndicator;
 export 'src/widgets/biomarker_trend_line.dart' show BiomarkerTrendLine;
 export 'src/widgets/biomarker_visceral_fat_area.dart' show BiomarkerVisceralFatArea;
 export 'src/widgets/biomarkers_muscle_fat_analysis.dart' show BiomarkersMuscleFatAnalysis;
