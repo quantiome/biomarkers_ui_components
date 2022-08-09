@@ -9,15 +9,17 @@ abstract class AppColors {
   static const Color gold = Color(0xFFFFCD00);
   static const Color yellow1 = Color(0xFFFFE195);
   static const Color yellow2 = Color(0xFFFFD466);
-  static const Color red = Color(0xFFFF9595);
+  static const Color green500 = Color(0xFF55AC65);
+  static const Color orange500 = Color(0xFFFF9800);
+  static const Color red500 = Color(0xFFE94747);
 
   // Biomarker ranges
-  static const Color biomarkerOptimal = purple500;
-  static const Color biomarkerBorderlineLow = yellow1;
-  static const Color biomarkerBorderlineHigh = yellow1;
-  static const Color biomarkerBadLow = yellow2;
-  static const Color biomarkerBadHigh = yellow2;
-  static const Color biomarkerVeryBadLow = red;
-  static const Color biomarkerVeryBadHigh = red;
-  static const Color biomarkerDefault = grey400;
+  static const Color biomarkerOptimal = green500;
+  static const Color biomarkerBorderlineLow = gold;
+  static const Color biomarkerBorderlineHigh = gold;
+  static const Color biomarkerBadLow = orange500;
+  static const Color biomarkerBadHigh = orange500;
+  static const Color biomarkerVeryBadLow = red500;
+  static const Color biomarkerVeryBadHigh = red500;
+  static const Color biomarkerDefault = red500;
 }

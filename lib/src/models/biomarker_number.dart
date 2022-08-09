@@ -36,27 +36,6 @@ extension BiomarkerNumberRangeExtension on BiomarkerNumberRange {
         return AppColors.biomarkerDefault;
     }
   }
-
-  String get humanReadableName {
-    switch (this) {
-      case BiomarkerNumberRange.veryHigh:
-        return 'Very high';
-      case BiomarkerNumberRange.high:
-        return 'High';
-      case BiomarkerNumberRange.borderlineHigh:
-        return 'Rather high';
-      case BiomarkerNumberRange.optimal:
-        return 'Optimal';
-      case BiomarkerNumberRange.borderLineLow:
-        return 'Rather Low';
-      case BiomarkerNumberRange.low:
-        return 'Low';
-      case BiomarkerNumberRange.veryLow:
-        return 'Very Low';
-      case BiomarkerNumberRange.unknown:
-        return '';
-    }
-  }
 }
 
 @immutable

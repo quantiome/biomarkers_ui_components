@@ -55,7 +55,7 @@ class BiomarkerCardRangeIndicator extends StatelessWidget {
     } else if (biomarker.minOptimalValue == null) {
       text = 'Under ${biomarker.maxOptimalValue!.toStringPretty()}';
     } else {
-      text = '${biomarker.minOptimalValue!.toStringPretty()} - ${biomarker.maxOptimalValue!.toStringPretty()}';
+      text = '${biomarker.minOptimalValue!.toStringPretty()}-${biomarker.maxOptimalValue!.toStringPretty()}';
     }
 
     return Text(
@@ -66,26 +66,13 @@ class BiomarkerCardRangeIndicator extends StatelessWidget {
     );
   }
 
-  Widget _buildRangeDot() => Row(
-        children: [
-          Container(
-            width: 24,
-            height: 24,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: biomarker.range.color,
-            ),
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              biomarker.range.humanReadableName,
-              style: AppTextStyles.biomarkerOptimalRange,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-            ),
-          ),
-        ],
+  Widget _buildRangeDot() => Container(
+        width: 12,
+        height: 12,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: biomarker.range.color,
+        ),
       );
 
   Widget _buildNoteText() => Text(
@@ -135,11 +122,16 @@ class BiomarkerCardRangeIndicator extends StatelessWidget {
                   children: [
                     _buildDateText(),
                     const SizedBox(height: 16),
-                    _buildValueText(),
+                    Row(
+                      children: [
+                        _buildRangeDot(),
+                        const SizedBox(width: 20),
+                        _buildValueText(),
+                      ],
+                    ),
                     const SizedBox(height: 16),
                     _buildOptimalRangeText(),
                     const SizedBox(height: 16),
-                    if (biomarker.range != BiomarkerNumberRange.unknown) _buildRangeDot(),
                   ],
                 ),
               ),

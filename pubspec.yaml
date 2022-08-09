@@ -1,6 +1,6 @@
 name: groqhealth_biomarkers
 description: Groqhealth biomarkers UI components.
-version: 4.0.1
+version: 4.1.0
 
 environment:
   sdk: ">=2.16.2 <3.0.0"

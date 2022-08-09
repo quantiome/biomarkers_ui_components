@@ -53,7 +53,7 @@ class BiomarkerCardFallback extends StatelessWidget {
     } else if (biomarker.minOptimalValue == null) {
       text = 'Under ${biomarker.maxOptimalValue!.toStringPretty()}';
     } else {
-      text = '${biomarker.minOptimalValue!.toStringPretty()} - ${biomarker.maxOptimalValue!.toStringPretty()}';
+      text = '${biomarker.minOptimalValue!.toStringPretty()}-${biomarker.maxOptimalValue!.toStringPretty()}';
     }
 
     return Text(

@@ -1,3 +1,7 @@
+## [4.1.0] - 2022-08-09
+* BiomarkerNumber: Updated the color of the ranges.
+* BiomarkerCardRangeIndicator: Moved the range colored dot next to the value.
+
 ## [4.0.1] - 2022-08-02
 * BiomarkerNumber: Fixed bug in computation of `range`.
 
