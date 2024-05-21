@@ -15,6 +15,7 @@ extension NumExtension on num {
 extension DoubleExtension on double {
   /// Returns the value linearly transformed from [valueMin, valueMax] to [0, 1].
   /// If the value is not in the the given [valueMin, valueMax] it will be clamped to still fall in [0, 1].
+  /// If [valueMin] == [valueMax] there is no meaningful normalization and the returned value will be 0.5.
   double normalize(num valueMin, num valueMax) => distribute(
         targetMin: 0,
         targetMax: 1,
@@ -24,6 +25,7 @@ extension DoubleExtension on double {
 
   /// Returns the value linearly transformed from [valueMin, valueMax] to [targetMin, targetMax].
   /// If the value is not in the the given [valueMin, valueMax] it will be clamped to still fall in [targetMin, targetMax].
+  /// If [valueMin] == [valueMax] there is no meaningful distribution and the returned value will be the average of [targetMin, targetMax].
   /// Source: https://stats.stackexchange.com/questions/178626/how-to-normalize-data-between-1-and-1
   double distribute({
     required num targetMin,
@@ -31,7 +33,10 @@ extension DoubleExtension on double {
     required num valueMin,
     required num valueMax,
   }) {
-    assert(valueMin != valueMax);
+    if (valueMin == valueMax) {
+      return (targetMax + targetMin) * 0.5;
+    }
+
     return ((targetMax - targetMin) * ((this - valueMin) / (valueMax - valueMin)) + targetMin)
         .clamp(targetMin, targetMax)
         .toDouble();

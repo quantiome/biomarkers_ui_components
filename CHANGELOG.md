@@ -1,3 +1,13 @@
+## [4.2.0] - 2024-04-21
+* DoubleExtension.distribute: Removed assert when valueMin == valueMax and now falls back to taking the average of [targetMin, targetMax].
+
+## [4.1.2] - 2024-04-16
+* Updated for Flutter 3.22.
+* Upgraded intl to 0.19.0.
+
+## [4.1.1] - 2023-06-01
+* Updated for Flutter 3.10
+
 ## [4.1.0] - 2022-08-09
 * BiomarkerNumber: Updated the color of the ranges.
 * BiomarkerCardRangeIndicator: Moved the range colored dot next to the value.
